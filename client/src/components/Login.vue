@@ -1,12 +1,12 @@
 <template>
-  <panel title='Register'>
+  <panel title='LogIn'>
     <div class="pl-4 pr-4 pt-2 pb-2">
       <v-text-field type="email" name="email" label="Email" v-model="email" placeholder="email"></v-text-field>
       <br>
       <v-text-field type="password" name="password" label="Password" v-model="password" placeholder="password"></v-text-field>
       <br>
       <div class="danger-alert" v-html="error"/>
-      <v-btn color="#0af" @click="register" dark>Register</v-btn>
+      <v-btn color="#0af" @click="login" dark>Login</v-btn>
     </div>
   </panel>
 </template>
@@ -22,15 +22,17 @@ export default {
     }
   },
   methods: {
-    async register () {
+    async login () {
       try {
-        const response = await AuthenticationService.register({
+        const response = await AuthenticationService.login({
           email: this.email,
           password: this.password
         })
         this.error = null
+
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
+
         this.$router.push({name: 'songs'})
       } catch (error) {
         this.error = error.response.data.error
